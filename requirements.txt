@@ -1,0 +1,13 @@
+# Core
+pandas>=1.0.0
+scikit-learn>=0.23.2
+
+# ML - Using specific module to reduce installation size
+autogluon.tabular[all]==0.8.2
+
+# Backend
+Flask>=2.0.0
+Flask-Cors>=3.0.10
+
+# AWS SDK (for connecting to AWS services in a real environment)
+boto3>=1.24.0 

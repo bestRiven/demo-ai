@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>城市空气质量预测</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>全球城市空气质量预测</h1>
+            <p>一个使用机器学习和 GenAI 技术的原型</p>
+        </header>
+
+        <main>
+            <div class="controls">
+                <label for="city-select">选择城市:</label>
+                <select id="city-select">
+                    <option value="chicago">芝加哥 (Chicago)</option>
+                </select>
+                <button id="predict-btn">预测空气质量</button>
+            </div>
+
+            <div id="result-container" class="hidden">
+                <div id="loader" class="hidden"></div>
+                <div id="error-message" class="hidden"></div>
+                
+                <div id="prediction-content">
+                    <h2 id="result-city"></h2>
+                    <div class="card">
+                        <img id="result-image" src="" alt="AI Generated City Image">
+                        <div class="info">
+                            <p class="aqi-title">预测AQI (未来24小时)</p>
+                            <p id="result-aqi" class="aqi-value"></p>
+                            <p id="result-category" class="aqi-category"></p>
+                        </div>
+                    </div>
+                    <div class="health-advice">
+                        <h3>健康建议</h3>
+                        <p id="result-advice"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>ABC 公司解决方案原型</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
