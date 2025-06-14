@@ -1,9 +1,11 @@
 # Core
 pandas>=1.0.0
 scikit-learn>=0.23.2
+pyarrow>=10.0.0 # For reading parquet files from S3
 
 # ML - Using specific module to reduce installation size
 autogluon.tabular[all]==0.8.2
+autogluon.timeseries[all]==0.8.2
 
 # Backend
 Flask>=2.0.0
