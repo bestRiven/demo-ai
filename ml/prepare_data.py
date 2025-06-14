@@ -18,8 +18,8 @@ def download_data_from_s3():
     
     # --- File 1: NOAA GSOD Weather Data ---
     noaa_bucket = 'noaa-gsod-pds'
-    noaa_key = '2023/725300-94846.csv' # Chicago O'Hare International Airport for 2023
-    noaa_local_path = os.path.join('data', 'noaa-chicago-2023.csv')
+    noaa_key = '2024/725300-94846.csv' # Chicago O'Hare International Airport for 2024
+    noaa_local_path = os.path.join('data', 'noaa-chicago-2024.csv')
     
     if not os.path.exists(noaa_local_path):
         print(f"Downloading NOAA data from s3://{noaa_bucket}/{noaa_key}...")
@@ -35,7 +35,7 @@ def download_data_from_s3():
     # --- File 2: OpenAQ Air Quality Data (using v2 parquet for efficiency) ---
     openaq_bucket = 'openaq-v2-post-etl-bucket'
     # Download PM2.5 and O3 data for Chicago for a few months in 2023
-    openaq_local_path = os.path.join('data', 'openaq-chicago-2023.parquet')
+    openaq_local_path = os.path.join('data', 'openaq-chicago-2024.parquet')
     
     if not os.path.exists(openaq_local_path):
         print("Downloading OpenAQ data for Chicago (this may take a moment)...")
@@ -43,10 +43,10 @@ def download_data_from_s3():
             # For this prototype, we'll fetch PM2.5 data for a few months and save it.
             # In a real scenario, you'd query a wider range of data.
             keys_to_download = [
-                'data/v2/measures/parquet/city=Chicago/month=2023-09/parameter=pm25/',
-                'data/v2/measures/parquet/city=Chicago/month=2023-10/parameter=pm25/',
-                'data/v2/measures/parquet/city=Chicago/month=2023-09/parameter=o3/',
-                'data/v2/measures/parquet/city=Chicago/month=2023-10/parameter=o3/'
+                'data/v2/measures/parquet/city=Chicago/month=2024-01/parameter=pm25/',
+                'data/v2/measures/parquet/city=Chicago/month=2024-02/parameter=pm25/',
+                'data/v2/measures/parquet/city=Chicago/month=2024-01/parameter=o3/',
+                'data/v2/measures/parquet/city=Chicago/month=2024-02/parameter=o3/'
             ]
             
             all_files = []
@@ -82,17 +82,17 @@ def prepare_data():
     and saves the final dataset.
     """
     # Step 1: Ensure data is downloaded
-    download_data_from_s3()
+    # download_data_from_s3()
 
     print("\nStarting data preparation and feature engineering...")
     
     # Step 2: Load and process OpenAQ data
-    openaq_df = pd.read_parquet(os.path.join('data', 'openaq-chicago-2023.parquet'))
+    openaq_df = pd.read_csv(os.path.join('data', 'openaq_chicago_sample.csv'))
     openaq_df['date'] = pd.to_datetime(openaq_df['date.utc']).dt.date
     aq_pivot = openaq_df.pivot_table(index='date', columns='parameter', values='value', aggfunc='mean').reset_index()
     
     # Step 3: Load and process NOAA data
-    noaa_df = pd.read_csv(os.path.join('data', 'noaa-chicago-2023.csv'))
+    noaa_df = pd.read_csv(os.path.join('data', 'noaa_gsod_chicago_sample.csv'))
     noaa_df['date'] = pd.to_datetime(noaa_df['DATE']).dt.date
     
     # Step 4: Merge data
@@ -109,6 +109,7 @@ def prepare_data():
     # Step 6: Advanced Feature Engineering
     print("Performing feature engineering...")
     final_df.set_index('date', inplace=True)
+    final_df.index = pd.to_datetime(final_df.index)
     
     # Create rolling average features
     rolling_features = ['pm25', 'o3', 'TEMP', 'WDSP']

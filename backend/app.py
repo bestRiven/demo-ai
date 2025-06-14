@@ -126,14 +126,14 @@ def predict(city):
     # 这里我们根据AQI等级选择一张预置图片。
     # URL被构建为根相对路径，例如 '/images/good.png'。
     image_name = f"{level_code}.png"
-    image_url = f"/images/{image_name}"
+    image_url = f"images/{image_name}"
 
     response = {
         "city": city.capitalize(),
         "predicted_aqi": predicted_aqi,
         "category": category,
         "health_advice": health_info,
-        "image_url": image_url # 返回优化后的URL
+        "image_url": image_url
     }
 
     return jsonify(response)
